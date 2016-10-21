@@ -1,0 +1,47 @@
+require 'net/http'
+require 'json'
+require 'active_support/core_ext/string'
+require 'lumberjack'
+
+
+require 'filethis/client'
+require 'filethis/base'
+require 'filethis/path_generator'
+require 'filethis/hash_path_generator'
+require 'filethis/request_method'
+
+require 'filethis/account'
+require 'filethis/account_connection'
+require 'filethis/account_document'
+require 'filethis/account_interaction'
+require 'filethis/calendar'
+require 'filethis/calendar_event'
+require 'filethis/calendar_event_note'
+require 'filethis/calendar_event_recurrence'
+require 'filethis/calendar_event_reminder'
+require 'filethis/calendar_event_document'
+require 'filethis/change'
+require 'filethis/connection'
+require 'filethis/delivery'
+require 'filethis/destination'
+require 'filethis/document'
+require 'filethis/help'
+require 'filethis/incentive'
+require 'filethis/interaction'
+require 'filethis/partner_delivery'
+require 'filethis/partner'
+require 'filethis/partner_change'
+require 'filethis/question'
+require 'filethis/referral'
+require 'filethis/referral_campaign'
+require 'filethis/service'
+require 'filethis/service_history'
+require 'filethis/source'
+require 'filethis/statistic'
+require 'filethis/subscriber'
+require 'filethis/version'
+
+LOGGER = Lumberjack::Logger.new
+
+module Filethis
+end
