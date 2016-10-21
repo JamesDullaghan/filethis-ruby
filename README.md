@@ -1,4 +1,5 @@
 # Filethis Ruby Bindings
+[![CircleCI](https://circleci.com/gh/himaxwell/filethis-ruby/tree/master.svg?style=svg&circle-token=504daabdceb5219040794459a40abb5689d13fc1)](https://circleci.com/gh/himaxwell/filethis-ruby/tree/master)
 
 The Filethis Ruby bindings provide a small SDK for convenient access to the Filethis API from applications written in the Ruby language. It provides a pre-defined set of classes for API resources that initialize themselves dynamically from API responses which allows the bindings to tolerate a number of different versions of the API.
 
