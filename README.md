@@ -1,8 +1,6 @@
-# Filethis::Ruby
+# Filethis Ruby Bindings
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/filethis/ruby`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+The Filethis Ruby bindings provide a small SDK for convenient access to the Filethis API from applications written in the Ruby language. It provides a pre-defined set of classes for API resources that initialize themselves dynamically from API responses which allows the bindings to tolerate a number of different versions of the API.
 
 ## Installation
 
@@ -17,8 +15,6 @@ And then execute:
     $ bundle
 
 ## Usage
-
-# Filethis Ruby Wrapper
 
 There are a few ways to set the credentials for Filethis...
 
