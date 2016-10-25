@@ -17,7 +17,7 @@ And then execute:
 
 ## Usage
 
-#### TODO : Create Generator
+#### TODO : Create Initializer Generator
 
 Create a `filethis` initializer in `config/initializers` directory and add the following:
 
@@ -98,6 +98,21 @@ To delete a resource, append destroy to the method call. Unfortunately, as it st
     { account_id: '', connection_id: '', interaction_id: '' }
   )
 ```
+
+#### Ignore Values
+
+There are some examples that expect you to input arbitrary values. Unfortunately, the way we build the URL doesn't play well although we set the body to the opts hash. To ignore url generation with params, you can pass the `ignore_values` option in. Currently there is no way to handle more complex url structures ex.) `/accounts/:account_id/connections/:connection_id` while passing arbitrary params in.
+
+```ruby
+  Filethis::Account.create_accounts({partnerAccountId: 'some awesome value!', ignore_values: true})
+```
+
+Without the `ignore_values` option, the url will be generated using the `partnerAccountId` string.
+
+```ruby
+  /accounts/some awesome value
+  => Invalid URL explosion
+````
 
 # TODO : Finish Documentation
 

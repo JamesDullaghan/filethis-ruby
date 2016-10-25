@@ -14,7 +14,7 @@ module Filethis
       @path = path.present? ? path : ''
       @filethis_api_key = Filethis::Client.api_key || ENV['FILETHIS_API_KEY'] || opts[:api_key]
       @filethis_api_secret = Filethis::Client.api_secret || ENV['FILETHIS_API_SECRET'] || opts[:api_secret]
-      @opts = opts.except(:ticket, :request_method) if opts.present?
+      @opts = opts.except(:api_key, :api_secret, :request_method) if opts.present?
       @request_method = opts[:request_method]
     end
 
