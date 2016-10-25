@@ -14,16 +14,17 @@ module Filethis
 
     attr_reader :name, :args
 
+    # TODO : look into how this influences singular resources that don't require an id
     def generate_path
       new_path = if request_method && request_method != :get
-                   path_without_req_meth
-                 else
-                   # this will take ['partners', 'accounts'] and ['1', '2']
-                   # and return /partners/1/accounts/2
-                   path_names.zip(args[0].values).map(&:compact)
-                 end
+        path_without_req_meth
+      else
+        path_names
+      end
 
-      new_path.join('/')
+      # this will take ['partners', 'accounts'] and ['1', '2']
+      # and return /partners/1/accounts/2
+      new_path.zip(args[0].values).map(&:compact).join('/')
     end
 
     def sigularize_last_resource

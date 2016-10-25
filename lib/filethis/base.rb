@@ -32,13 +32,5 @@ module Filethis
     def self.hash?(args)
       args.present? && args[0].is_a?(Hash)
     end
-
-    def get?(args)
-      args.present? && args[0].fetch(:req_method) { :get } == :get
-    end
-
-    def post?(args)
-      args.present? && args[0].fetch(:req_method) == :post
-    end
   end
 end

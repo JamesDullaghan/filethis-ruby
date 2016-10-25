@@ -1,6 +1,7 @@
 module Filethis
-  class PathGenerator < Base
-      SPLIT_ACTIONS = %w(create update destroy)
+  class PathGenerator
+    SPLIT_ACTIONS = %w(create update destroy)
+
     attr_reader :name
 
     def initialize(name:)
@@ -16,6 +17,7 @@ module Filethis
     end
 
     def path_without_req_meth
+      puts path_names - (path_names & SPLIT_ACTIONS)
       @path_without_req_meth ||= path_names - (path_names & SPLIT_ACTIONS)
     end
 

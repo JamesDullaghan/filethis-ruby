@@ -1,18 +1,21 @@
 module Filethis
   class Client
+    class << self
+      attr_accessor :api_key, :api_secret
+    end
+
     attr_reader :path,
-                :ticket,
+                :api_key,
+                :api_secret,
                 :opts,
                 :request_method
 
-    attr_accessor :account_id
-
     def initialize(path, opts = {})
       @path = path.present? ? path : ''
-      @ticket = ENV['FILETHIS_TICKET'] || opts[:ticket]
+      @api_key = ENV['FILETHIS_API_KEY'] || @api_key || opts[:api_key]
+      @api_secret = ENV['FILETHIS_API_SECRET'] || @api_secret || opts[:api_secret]
       @opts = opts.except(:ticket, :request_method) if opts.present?
       @request_method = opts[:request_method]
-      @account_id = nil
     end
 
     # Filethis::Client.fetch('partners', { id: 1, ticket: 'some_ticket' })
@@ -33,12 +36,13 @@ module Filethis
     end
 
     def base_url
-      @base_url ||= URI("https://filethis.com:443/api/v1/#{path}?ticket=#{ticket}")
+      @base_url ||= URI("https://filethis.com:443/api/v1/#{path}")
     end
 
     # TODO : Refactor
     def delete
       @request ||= Net::HTTP::Delete.new(base_url)
+      @request.basic_auth api_key, api_secret
       @request["content-type"] = 'application/json'
       @request["cache-control"] = 'no-cache'
       @request.body = opts.to_json
@@ -47,6 +51,7 @@ module Filethis
 
     def put
       @request ||= Net::HTTP::Put.new(base_url)
+      @request.basic_auth api_key, api_secret
       @request["content-type"] = 'application/json'
       @request["cache-control"] = 'no-cache'
       @request.body = opts.to_json
@@ -55,6 +60,7 @@ module Filethis
 
     def post
       @request ||= Net::HTTP::Post.new(base_url)
+      @request.basic_auth api_key, api_secret
       @request["content-type"] = 'application/json'
       @request["cache-control"] = 'no-cache'
       @request.body = opts.to_json
@@ -63,6 +69,7 @@ module Filethis
 
     def get
       @request ||= Net::HTTP::Get.new(base_url)
+      @request.basic_auth api_key, api_secret
       @request["cache-control"] = 'no-cache'
       @request
     end

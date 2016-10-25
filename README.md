@@ -17,15 +17,25 @@ And then execute:
 
 ## Usage
 
-There are a few ways to set the credentials for Filethis...
+#### TODO : Create Generator
 
-You'll need a **ticket**
+Create a `filethis` initializer in `config/initializers` directory and add the following:
 
-The filethis ticket can be found after logging into your account with the supplied partner credentials and looking for the ticket url param in the url.
+```ruby
+  require 'filethis'
 
-Initialize a new client by setting `filethis_ticket` in `secrets.yml`.
-Initialize a new client by setting `ENV['FILETHIS_TICKET']`
-Initialize a new client by passing the ticket into each request as a parameter.
+  Filethis::Client.api_key = Rails.application.secrets.filethis_api_key
+  Filethis::Client.api_secret = Rails.application.secrets.filethis_api_secret
+```
+
+To set credentials for Filethis, you'll need an `API_KEY` and an `API_SECRET`. To obtain these credentials, contact the folks at Filethis or obtain them from the `FileThisPartnerConsole`.
+
+In your `secrets.yml` file add the following entries
+
+```yaml
+  filethis_api_key: 'some_api_key'
+  fileethis_api_secret: 'some_api_secret'
+```
 
 ### Available methods
 
