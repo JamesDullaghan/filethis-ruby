@@ -78,16 +78,22 @@ module Filethis
       @http ||= Net::HTTP.new(base_url.host, base_url.port)
       @http.use_ssl = true
       @http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      puts base_url.to_s
+      puts "#{request_method} : #{base_url.to_s}"
       @http
     end
 
+    def req_method
+      request_method.to_sym
+    end
+
     def response
-      @response ||= http.request(self.send(request_method.to_sym))
+      @response ||= http.request(self.send(req_method))
     end
 
     def parsed_response
-      @parsed_response ||= JSON.parse(response.read_body, quirks_mode: true)
+      @parsed_response ||= if req_method != :delete
+        JSON.parse(response.read_body, quirks_mode: true)
+      end
     rescue JSON::ParserError => e
       Rails.logger.error("This endpoint URL does not exist or has moved : #{e.inspect}")
     end
