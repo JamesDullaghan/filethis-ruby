@@ -17,7 +17,6 @@ module Filethis
     end
 
     def path_without_req_meth
-      puts path_names - (path_names & SPLIT_ACTIONS)
       @path_without_req_meth ||= path_names - (path_names & SPLIT_ACTIONS)
     end
 

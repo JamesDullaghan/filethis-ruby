@@ -5,15 +5,15 @@ module Filethis
     end
 
     attr_reader :path,
-                :api_key,
-                :api_secret,
+                :filethis_api_key,
+                :filethis_api_secret,
                 :opts,
                 :request_method
 
     def initialize(path, opts = {})
       @path = path.present? ? path : ''
-      @api_key = ENV['FILETHIS_API_KEY'] || @api_key || opts[:api_key]
-      @api_secret = ENV['FILETHIS_API_SECRET'] || @api_secret || opts[:api_secret]
+      @filethis_api_key = Filethis::Client.api_key || ENV['FILETHIS_API_KEY'] || opts[:api_key]
+      @filethis_api_secret = Filethis::Client.api_secret || ENV['FILETHIS_API_SECRET'] || opts[:api_secret]
       @opts = opts.except(:ticket, :request_method) if opts.present?
       @request_method = opts[:request_method]
     end
@@ -42,7 +42,7 @@ module Filethis
     # TODO : Refactor
     def delete
       @request ||= Net::HTTP::Delete.new(base_url)
-      @request.basic_auth api_key, api_secret
+      @request.basic_auth filethis_api_key, filethis_api_secret
       @request["content-type"] = 'application/json'
       @request["cache-control"] = 'no-cache'
       @request.body = opts.to_json
@@ -51,7 +51,7 @@ module Filethis
 
     def put
       @request ||= Net::HTTP::Put.new(base_url)
-      @request.basic_auth api_key, api_secret
+      @request.basic_auth filethis_api_key, filethis_api_secret
       @request["content-type"] = 'application/json'
       @request["cache-control"] = 'no-cache'
       @request.body = opts.to_json
@@ -60,7 +60,7 @@ module Filethis
 
     def post
       @request ||= Net::HTTP::Post.new(base_url)
-      @request.basic_auth api_key, api_secret
+      @request.basic_auth filethis_api_key, filethis_api_secret
       @request["content-type"] = 'application/json'
       @request["cache-control"] = 'no-cache'
       @request.body = opts.to_json
@@ -69,7 +69,7 @@ module Filethis
 
     def get
       @request ||= Net::HTTP::Get.new(base_url)
-      @request.basic_auth api_key, api_secret
+      @request.basic_auth filethis_api_key, filethis_api_secret
       @request["cache-control"] = 'no-cache'
       @request
     end
