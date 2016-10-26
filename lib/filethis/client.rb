@@ -29,7 +29,6 @@ module Filethis
       @base_url ||= URI("https://filethis.com:443/api/v1/#{path}")
     end
 
-    # TODO : Refactor
     def delete
       @request ||= Net::HTTP::Delete.new(base_url)
       @request.basic_auth filethis_api_key, filethis_api_secret
@@ -81,11 +80,11 @@ module Filethis
     end
 
     def parsed_response
-      @parsed_response ||= if req_method != :delete
+      @parsed_response ||= if response.read_body.present?
         JSON.parse(response.read_body, quirks_mode: true)
       end
     rescue JSON::ParserError => e
-      Rails.logger.error("This endpoint URL does not exist or has moved : #{e.inspect}")
+      LOGGER.error("This endpoint URL does not exist or has moved : #{e.inspect}")
     end
   end
 end
