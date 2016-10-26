@@ -17,6 +17,12 @@ And then execute:
 
 ## Usage
 
+To execute API calls in irb you can run the following command from the project root, loading in the filethis gem
+
+```ruby
+  irb -r ./lib/filethis.rb
+```
+
 #### TODO : Create Initializer Generator
 
 Create a `filethis` initializer in `config/initializers` directory and add the following:
@@ -40,6 +46,36 @@ In your `secrets.yml` file add the following entries
 ### Available methods
 
 There are A LOT of methods available. This wrapper makes use of `method_missing` and uses the method call to generate a path and request method (get, post, put, delete) for the resource.
+
+The class you use doesn't really matter, as method missing is used on the `Base` class. The defined classes are more for seeing which endpoints are available without looking up the API docs. You could theoretically do the following:
+
+```ruby
+  Filethis::Help.accounts
+```
+
+The method call and supplied params generate the path, not the class.
+
+### Params
+
+There are two hashes of parameters you can pass to the method calls.
+
+The first hash will be used to generate the path with the help of the method call. The order of the url params does matter as the values are zipped into the formatted method call.
+
+```ruby
+  Filethis::Account.accounts_connections({ accountId: '1234', connectionId: '1234' })
+  # this generates a get request to /accounts/1234/connections/1234
+  Filethis::Account.account_connection({ accountId: '1234', connectionId: '1234' })
+  # Note: this is not a valid endpoint but it will generate the correct url if the endpoint is singular
+  # this generates a get request to /account/1234/connection/1234
+```
+
+The second hash is a set of request parameters
+
+```ruby
+  url_params = { accountId: '1234' }
+  request_params = { username: 'jappleseed', password: 'password', sourceId: '27' }
+  Filethis::Account.create_accounts_connections(url_params, request_params)
+```
 
 To fetch a resource, there is no request method prefixed to the method call.
 
@@ -69,10 +105,10 @@ To delete a resource, append destroy to the method call. Unfortunately, as it st
 
 ```ruby
   Filethis::Account.accounts
-  Filethis::Account.accounts('36')
-  Filethis::Account.create_accounts({})
-  Filethis::Account.update_accounts({})
-  Filethis::Account.destroy_accounts({})
+  Filethis::Account.accounts
+  Filethis::Account.create_accounts(url_params, request_params)
+  Filethis::Account.update_accounts(url_params, request_params)
+  Filethis::Account.destroy_accounts(url_params)
 ```
 
 #### Account Connections
@@ -81,9 +117,9 @@ To delete a resource, append destroy to the method call. Unfortunately, as it st
   Filethis::AccountConnection.account_connections({ account_id: '' })
   Filethis::AccountConnection.account_connections({ account_id: '', connection_id: '' })
 
-  Filethis::AccountConnection.create_account_connections({})
-  Filethis::AccountConnection.update_account_connections({})
-  Filethis::AccountConnection.destroy_account_connections({})
+  Filethis::AccountConnection.create_account_connections(url_params, request_params)
+  Filethis::AccountConnection.update_account_connections(url_params, request_params)
+  Filethis::AccountConnection.destroy_account_connections(url_params)
 ```
 
 #### Account Connection Interaction
@@ -98,24 +134,6 @@ To delete a resource, append destroy to the method call. Unfortunately, as it st
     { account_id: '', connection_id: '', interaction_id: '' }
   )
 ```
-
-#### Ignore Values
-
-There are some examples that expect you to input arbitrary values. Unfortunately, the way we build the URL doesn't play well although we set the body to the opts hash. To ignore url generation with params, you can pass the `ignore_values` option in. Currently there is no way to handle more complex url structures ex.) `/accounts/:account_id/connections/:connection_id` while passing arbitrary params in.
-
-```ruby
-  Filethis::Account.create_accounts({partnerAccountId: 'some awesome value!', ignore_values: true})
-```
-
-Without the `ignore_values` option, the url will be generated using the `partnerAccountId` string.
-
-```ruby
-  /accounts/some awesome value
-  => Invalid URL explosion
-````
-
-# TODO : Finish Documentation
-
 
 ## Development
 

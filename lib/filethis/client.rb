@@ -8,31 +8,21 @@ module Filethis
                 :filethis_api_key,
                 :filethis_api_secret,
                 :opts,
-                :request_method
+                :request_method,
+                :request_params
 
-    def initialize(path, opts = {})
+    def initialize(path, opts = {}, request_params = {})
       @path = path.present? ? path : ''
       @filethis_api_key = Filethis::Client.api_key || ENV['FILETHIS_API_KEY'] || opts[:api_key]
       @filethis_api_secret = Filethis::Client.api_secret || ENV['FILETHIS_API_SECRET'] || opts[:api_secret]
       @opts = opts.except(:api_key, :api_secret, :request_method) if opts.present?
       @request_method = opts[:request_method]
+      @request_params = request_params
     end
 
-    # Filethis::Client.fetch('partners', { id: 1, ticket: 'some_ticket' })
-    # ticket and ID are optional.
-    def self.collection(path, opts = {})
-      client = Filethis::Client.new(path, opts)
+    def self.request(path, opts, request_params)
+      client = Filethis::Client.new(path, opts, request_params)
       client.parsed_response
-    end
-
-    def self.member(path, id = nil, opts = {})
-      # this will fetch the member if the path is defined with id's
-      # ex.) /partners/1/changes/1
-      collection_obj = collection(path, opts)
-
-      return collection_obj unless id
-      # We don't fetch when id is supplied as a string, we find from collection
-      collection_obj.find { |el| el['id'].to_i == id.to_i }
     end
 
     def base_url
@@ -45,7 +35,7 @@ module Filethis
       @request.basic_auth filethis_api_key, filethis_api_secret
       @request["content-type"] = 'application/json'
       @request["cache-control"] = 'no-cache'
-      @request.body = opts.to_json
+      @request.body = request_params.to_json
       @request
     end
 
@@ -54,7 +44,7 @@ module Filethis
       @request.basic_auth filethis_api_key, filethis_api_secret
       @request["content-type"] = 'application/json'
       @request["cache-control"] = 'no-cache'
-      @request.body = opts.to_json
+      @request.body = request_params.to_json
       @request
     end
 
@@ -63,7 +53,7 @@ module Filethis
       @request.basic_auth filethis_api_key, filethis_api_secret
       @request["content-type"] = 'application/json'
       @request["cache-control"] = 'no-cache'
-      @request.body = opts.to_json
+      @request.body = request_params.to_json
       @request
     end
 

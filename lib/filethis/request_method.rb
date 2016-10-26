@@ -8,11 +8,10 @@ module Filethis
 
     def self.call(name)
       client = Filethis::RequestMethod.new(name)
-
-      client.method
+      client.request_type
     end
-    # TODO : Too loud, can't think of better implementation
-    def method
+
+    def request_type
       if split_name.include?('create')
         :post
       elsif split_name.include?('update')
